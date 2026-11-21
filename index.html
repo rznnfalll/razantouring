@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Razan Touring - Galeri Foto Perjalanan</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: '#fb923c',
+              500: '#f97316', // Orange Adventure
+              600: '#ea580c',
+            },
+            dark: {
+              900: '#0c0f17',
+              850: '#121622',
+              800: '#1a2030',
+              700: '#262e42'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-orange-500 selection:text-black">
+
+  <!-- ================= AUTH: LOGIN SCREEN ================= -->
+  <div id="login-container" class="fixed inset-0 z-50 flex items-center justify-center bg-dark-900 p-4">
+    <div class="w-full max-w-sm bg-dark-850 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
+
+      <!-- Brand Logo -->
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/20 mb-3">
+          <i data-lucide="compass" class="w-7 h-7 text-black stroke-[2.3]"></i>
+        </div>
+        <h1 class="text-xl font-bold tracking-tight text-white">Razan Touring</h1>
+        <p class="text-xs text-slate-400 mt-1">Dokumentasi & Galeri Foto Perjalanan</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">Username</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="login-username" required placeholder="Masukkan username" class="w-full bg-dark-900 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="password" id="login-password" required placeholder="Masukkan password" class="w-full bg-dark-900 border border-slate-700/80 rounded-xl pl-9 pr-10 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition" />
+            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="login-error" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg p-2.5 text-center">
+          Username atau password salah!
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-orange-500 hover:bg-orange-400 text-black font-semibold rounded-xl text-sm transition shadow-lg shadow-orange-500/25 active:scale-[0.98] flex items-center justify-center gap-2">
+          <span>Buka Galeri Touring</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <div class="mt-6 pt-4 border-t border-slate-800 text-center">
+        <p class="text-[11px] text-slate-500">Khusus Akun Razan &bull; 3 Foto Per Touring</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MAIN APP (GALLERY) ================= -->
+  <div id="app-container" class="hidden flex-1 flex flex-col">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-dark-850/80 backdrop-blur sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center shadow shadow-orange-500/20">
+            <i data-lucide="navigation" class="w-5 h-5 text-black stroke-[2.5]"></i>
+          </div>
+          <div>
+            <h1 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              Razan Touring
+              <span class="text-[10px] bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded-full font-medium">3 Foto / Trip</span>
+            </h1>
+            <p class="text-[11px] text-slate-400">Koleksi Kenangan Touring & Road Trip</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button id="btn-open-form" class="px-3.5 py-1.5 rounded-xl bg-orange-500 hover:bg-orange-400 text-black text-xs font-semibold flex items-center gap-1.5 transition shadow-lg shadow-orange-500/20 active:scale-[0.98]">
+            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+            <span>Tambah Touring</span>
+          </button>
+
+          <button id="btn-sample-data" class="hidden md:flex px-3 py-1.5 rounded-xl border border-slate-700 bg-dark-800 hover:bg-slate-700 text-xs text-slate-300 font-medium items-center gap-1.5 transition" title="Isi contoh dokumentasi touring">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Contoh Foto</span>
+          </button>
+
+          <div class="h-4 w-px bg-slate-800 mx-1"></div>
+
+          <!-- User Badge & Logout -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-300 font-medium hidden sm:inline bg-dark-800 px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1.5">
+              <i data-lucide="user-check" class="w-3.5 h-3.5 text-orange-400"></i>
+              razan
+            </span>
+            <button id="btn-logout" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs transition" title="Logout">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- Stats Bar / Ringkasan Koleksi -->
+      <section class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <div class="bg-dark-850 border border-slate-800 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Total Destinasi</div>
+            <div class="text-lg sm:text-xl font-bold text-white tracking-tight" id="stat-total-touring">0 Tempat</div>
+          </div>
+        </div>
+
+        <div class="bg-dark-850 border border-slate-800 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+            <i data-lucide="camera" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Total Foto Tersimpan</div>
+            <div class="text-lg sm:text-xl font-bold text-white tracking-tight" id="stat-total-photos">0 Foto</div>
+          </div>
+        </div>
+
+        <div class="col-span-2 sm:col-span-1 bg-dark-850 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
+              <i data-lucide="hard-drive" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-medium">Penyimpanan</div>
+              <div class="text-xs font-semibold text-emerald-400">Database Lokal (Aman)</div>
+            </div>
+          </div>
+          <button id="btn-clear-all" class="text-[11px] text-rose-400 hover:text-rose-300 border border-rose-500/20 px-2.5 py-1 rounded-lg bg-rose-500/10 transition" title="Hapus semua galeri">
+            Reset Data
+          </button>
+        </div>
+      </section>
+
+      <!-- Filter & Search Bar -->
+      <section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-dark-850 p-3.5 rounded-2xl border border-slate-800">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="search-input" placeholder="Cari nama tempat / tujuan touring..." class="w-full bg-dark-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-orange-500" />
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="sort-select" class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-orange-500">
+            <option value="newest">Terkini (Terbaru)</option>
+            <option value="oldest">Terlama</option>
+            <option value="az">Nama A - Z</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Grid Galeri Touring -->
+      <section>
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Diisi via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden py-16 flex flex-col items-center justify-center text-center p-6 bg-dark-850/50 border border-slate-800/80 rounded-3xl">
+          <div class="w-16 h-16 rounded-2xl bg-dark-800 border border-slate-700 flex items-center justify-center text-slate-500 mb-4">
+            <i data-lucide="mountain-snow" class="w-8 h-8 text-orange-400"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-200">Belum Ada Catatan Foto Touring</h3>
+          <p class="text-xs text-slate-400 mt-1 max-w-sm">Mulai abadikan momen turing Anda dengan menekan tombol "Tambah Touring" di atas (1 nama turing berisi 3 foto).</p>
+          <button id="btn-empty-add" class="mt-4 px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-black text-xs font-semibold transition flex items-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+            Tambah Touring Pertama
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-dark-850 py-4 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <p>&copy; Razan Touring &bull; Album Kenangan Perjalanan</p>
+        <p>Tersimpan Otomatis di Database Browser</p>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ================= MODAL: INPUT TOURING BARU (3 FOTO) ================= -->
+  <div id="modal-form" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-dark-850 border border-slate-700/80 rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative my-8">
+      
+      <!-- Close Button -->
+      <button id="modal-close-btn" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg bg-dark-800 border border-slate-700">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3 mb-5 border-b border-slate-800 pb-4">
+        <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center">
+          <i data-lucide="camera-plus" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-white">Tambah Album Touring Baru</h2>
+          <p class="text-xs text-slate-400">Masukkan nama tujuan turing dan unggah 3 foto terbaik</p>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="touring-form" class="space-y-4">
+        
+        <!-- Nama Touring -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">
+            Nama Touring Ke Mana <span class="text-orange-400">*</span>
+          </label>
+          <div class="relative">
+            <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="input-destination" required placeholder="Contoh: Touring ke Pantai Menganti Kebumen" class="w-full bg-dark-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+          </div>
+        </div>
+
+        <!-- Tanggal & Kendaraan/Catatan -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Tanggal Touring</label>
+            <input type="date" id="input-date" required class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Catatan / Motor (Opsional)</label>
+            <input type="text" id="input-notes" placeholder="Contoh: Honda CB150X / Jalur Lintas Selatan" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-orange-500" />
+          </div>
+        </div>
+
+        <!-- 3 SLOT FOTO UPLOAD -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2 flex items-center justify-between">
+            <span>Pilih 3 Foto Touring <span class="text-orange-400">*</span></span>
+            <span class="text-[11px] text-orange-400 font-normal">Wajib 3 foto dalam sekali touring</span>
+          </label>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            <!-- Slot Foto 1 -->
+            <div class="photo-slot border border-dashed border-slate-700 hover:border-orange-500/60 rounded-2xl p-2 bg-dark-900 text-center relative group transition cursor-pointer" onclick="triggerUpload(1)">
+              <input type="file" id="file-1" accept="image/*" class="hidden" onchange="handleFileSelect(event, 1)" />
+              <div id="preview-container-1" class="h-36 sm:h-32 rounded-xl bg-dark-800/80 flex flex-col items-center justify-center p-2 overflow-hidden relative">
+                <i data-lucide="image-plus" class="w-6 h-6 text-slate-500 mb-1.5 group-hover:text-orange-400 transition"></i>
+                <span class="text-xs font-semibold text-slate-300">Foto 1</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Klik untuk unggah</span>
+              </div>
+            </div>
+
+            <!-- Slot Foto 2 -->
+            <div class="photo-slot border border-dashed border-slate-700 hover:border-orange-500/60 rounded-2xl p-2 bg-dark-900 text-center relative group transition cursor-pointer" onclick="triggerUpload(2)">
+              <input type="file" id="file-2" accept="image/*" class="hidden" onchange="handleFileSelect(event, 2)" />
+              <div id="preview-container-2" class="h-36 sm:h-32 rounded-xl bg-dark-800/80 flex flex-col items-center justify-center p-2 overflow-hidden relative">
+                <i data-lucide="image-plus" class="w-6 h-6 text-slate-500 mb-1.5 group-hover:text-orange-400 transition"></i>
+                <span class="text-xs font-semibold text-slate-300">Foto 2</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Klik untuk unggah</span>
+              </div>
+            </div>
+
+            <!-- Slot Foto 3 -->
+            <div class="photo-slot border border-dashed border-slate-700 hover:border-orange-500/60 rounded-2xl p-2 bg-dark-900 text-center relative group transition cursor-pointer" onclick="triggerUpload(3)">
+              <input type="file" id="file-3" accept="image/*" class="hidden" onchange="handleFileSelect(event, 3)" />
+              <div id="preview-container-3" class="h-36 sm:h-32 rounded-xl bg-dark-800/80 flex flex-col items-center justify-center p-2 overflow-hidden relative">
+                <i data-lucide="image-plus" class="w-6 h-6 text-slate-500 mb-1.5 group-hover:text-orange-400 transition"></i>
+                <span class="text-xs font-semibold text-slate-300">Foto 3</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Klik untuk unggah</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="upload-status" class="hidden text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-2.5 text-center">
+          Harap pilih 3 foto untuk touring ini!
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="btn-save-touring" class="w-full py-3 bg-orange-500 hover:bg-orange-400 text-black font-bold rounded-xl text-sm transition shadow-lg shadow-orange-500/25 active:scale-[0.99] flex items-center justify-center gap-2 mt-4">
+          <i data-lucide="check-circle-2" class="w-4 h-4 stroke-[2.5]"></i>
+          <span>Simpan Album Touring (3 Foto)</span>
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ================= LIGHTBOX MODAL (PREVIEW FOTO BESAR) ================= -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4">
+    <button id="lightbox-close" class="absolute top-5 right-5 text-slate-300 hover:text-white p-2 rounded-full bg-slate-800/80 border border-slate-700 transition z-50">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+
+    <div class="max-w-5xl max-h-[90vh] flex flex-col items-center justify-center">
+      <img id="lightbox-img" src="" alt="Preview Foto Touring" class="max-h-[80vh] max-w-full rounded-2xl shadow-2xl object-contain" />
+      <div class="mt-3 text-center">
+        <h4 id="lightbox-title" class="text-sm font-semibold text-white">Nama Touring</h4>
+        <p id="lightbox-caption" class="text-xs text-slate-400 mt-0.5">Foto 1 dari 3</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
